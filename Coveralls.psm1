@@ -37,15 +37,6 @@ function Merge-CoverageResult {
     return $allCommandsArray    
 }
 
-function Get-LineCoverageResult ($file, $line) {
-    $text = (Get-Content $file)[$line].Trim()
-    $ignoredChars = @('{','}','(',')','','else','param')
-    if ($ignoredChars.Contains($text) -or $text.StartsWith('#') -or $text.StartsWith('function')) {
-        return $null
-    }
-    return 0
-}
-
 function Get-CoverageArray {
 
     [CmdletBinding()]
@@ -72,7 +63,7 @@ function Get-CoverageArray {
                 $firstobject.CoverageResult
             }
         } else {
-            (Get-LineCoverageResult -File $File -Line ($line - 1))
+            $null
         }
     }
     return $coverageArray
