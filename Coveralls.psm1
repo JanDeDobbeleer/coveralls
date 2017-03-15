@@ -122,7 +122,14 @@ function Get-CommandsForFile {
 function Get-GitInfo {
 
     [CmdletBinding()]
-    param()
+    param(
+        [string]
+        $BranchName
+    )
+
+    if (!$BranchName) {
+        $BranchName = (git rev-parse --abbrev-ref HEAD)
+    }
 
     return New-Object -TypeName PSObject -Property @{
         head = New-Object -TypeName PSObject -Property @{
@@ -133,7 +140,7 @@ function Get-GitInfo {
             committer_email = (git log --format="%ce" HEAD -1)
             message = (git log --format="%s" HEAD -1)
         }
-        branch = (git rev-parse --abbrev-ref HEAD)
+        branch = $BranchName
     }
 }
 
@@ -147,7 +154,7 @@ function Format-Coverage {
         [parameter(Mandatory = $true,Position=2)]
         [string]
         $CoverallsApiToken,
-        [parameter(Position=3)]
+        $BranchName,        
         $RootFolder = $pwd
     )
 
@@ -160,7 +167,7 @@ function Format-Coverage {
         $coverageArray = Get-CoverageArray -CoverageResultArray $coverageResult -File $file 
         $fileCoverageArray += (Format-FileCoverage -CoverageArray $coverageArray -File $file -RootFolder $RootFolder)
     }
-    $git = Get-GitInfo
+    $git = Get-GitInfo -BranchName $BranchName
     return New-Object -TypeName PSObject -Property @{
         repo_token = $CoverallsApiToken
         commit_sha = (git log --format="%H" HEAD -1)
