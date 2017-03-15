@@ -86,11 +86,14 @@ function Format-FileCoverage {
         [parameter(Mandatory = $true,Position=1)]
         $CoverageArray,
         [parameter(Mandatory = $true,Position=2)]
-        $File
+        $File,
+        [parameter(Mandatory = $true,Position=3)]
+        $RootFolder
     )
 
     $fileHash = Get-FileHash $File -Algorithm MD5
-    $fileName = (Get-ChildItem $File).FullName.Replace($pwd, '').Replace('\','/').Remove(0,1)
+    $root = (Get-Item $RootFolder).FullName
+    $fileName = (Get-Item $File).FullName.Replace($root, '').Replace('\','/').Remove(0,1)
     return New-Object -TypeName PSObject -Property @{
         name = $fileName
         source_digest = $fileHash.Hash
@@ -143,7 +146,9 @@ function Format-Coverage {
         $Include,
         [parameter(Mandatory = $true,Position=2)]
         [string]
-        $CoverallsApiToken
+        $CoverallsApiToken,
+        [parameter(Position=3)]
+        $RootFolder = $pwd
     )
 
     $fileCoverageArray = @()
@@ -153,7 +158,7 @@ function Format-Coverage {
         $missedCommands = Get-CommandsForFile -Commands $pesterResults.CodeCoverage.MissedCommands -File $file
         $coverageResult = Merge-CoverageResult -HitCommands $hitcommands -MissedCommands $missedCommands -File $file 
         $coverageArray = Get-CoverageArray -CoverageResultArray $coverageResult -File $file 
-        $fileCoverageArray += (Format-FileCoverage -CoverageArray $coverageArray -File $file )
+        $fileCoverageArray += (Format-FileCoverage -CoverageArray $coverageArray -File $file -RootFolder $RootFolder)
     }
     $git = Get-GitInfo
     return New-Object -TypeName PSObject -Property @{

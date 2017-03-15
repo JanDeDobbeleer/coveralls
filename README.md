@@ -17,3 +17,7 @@ Get the infomation and publish it to Coveralls.io
     $token = 'BHJjjgRTHGgs776BGTYcdcjJT987jjGG'
     $coverage = Format-Coverage -Include $files -CoverallsApiToken $token
     Publish-Coverage -Coverage $coverage
+
+If you run you tests outside of the root folder of your repository, you need to specify it's location so that Coveralls can find the files and display the information nicely.
+
+    $coverage = Format-Coverage -Include $files -CoverallsApiToken $token -RootFolder ../
