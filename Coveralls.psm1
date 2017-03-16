@@ -183,4 +183,7 @@ function Publish-Coverage {
     $formdata = New-Object System.Net.Http.MultipartFormDataContent
     $formData.Add($stringContent, "json_file", "coverage.json")
     $result = $httpClient.PostAsync('https://coveralls.io/api/v1/jobs', $formData).Result;
+    $content = $result.Content.ReadAsStringAsync()
+    $coverageResult = ConvertFrom-Json $content.Result
+    return $coverageResult.url
 }
