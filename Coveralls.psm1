@@ -187,3 +187,21 @@ function Publish-Coverage {
     $coverageResult = ConvertFrom-Json $content.Result
     return $coverageResult.url
 }
+
+function Get-CoveragePercentage {
+
+    [CmdletBinding()]
+    param
+    (
+        [parameter(Mandatory = $true,Position=1)]
+        $RepositoryLink
+    )
+
+    try { 
+        $response = Invoke-WebRequest -UseBasicParsing "$RepositoryLink.json"
+        $coverageInfo = ConvertFrom-Json $response.Content
+        return $coverageInfo.covered_percent
+    } catch {
+        Throw "Get-CoveragePercentage: The requested repository replied with a ""$($_.Exception.Response.StatusCode)"""
+    }    
+}
