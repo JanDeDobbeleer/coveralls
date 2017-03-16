@@ -140,7 +140,9 @@ function Format-Coverage {
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true,Position=1)]
+        [parameter(Mandatory = $true, Position = 0, ParameterSetName = "PesterResults")]
+        $PesterResults,
+        [parameter(Mandatory = $true, Position = 1, ParameterSetName = "Include")]
         $Include,
         [parameter(Mandatory = $true,Position=2)]
         [string]
@@ -150,7 +152,9 @@ function Format-Coverage {
     )
 
     $fileCoverageArray = @()
-    $pesterResults = Invoke-Pester -CodeCoverage $Include -Quiet -PassThru
+    if (!$pesterResults) {
+        $pesterResults = Invoke-Pester -CodeCoverage $Include -Quiet -PassThru
+    }
     foreach ($file in $Include) {
         $hitcommands = Get-CommandsForFile -Commands $pesterResults.CodeCoverage.HitCommands -File $file
         $missedCommands = Get-CommandsForFile -Commands $pesterResults.CodeCoverage.MissedCommands -File $file
