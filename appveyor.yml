@@ -15,10 +15,11 @@ build_script:
   - ps: (Get-Content '.\coveralls.psd1' -Raw).Replace('%version%', $ENV:APPVEYOR_BUILD_VERSION) | Out-File -Encoding 'UTF8' '.\coveralls.psd1'
 before_test:
   - ps: Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-  - ps: Install-Module Coveralls -MinimumVersion 1.0.5 -Scope CurrentUser
+  - ps: Install-Module Coveralls -MinimumVersion 1.0.19 -Scope CurrentUser
   - ps: Import-Module Coveralls
 test_script:
-  - ps: $res = Invoke-Pester -CodeCoverage @('Coveralls.ps1') -OutputFormat NUnitXml -OutputFile TestsResults.xml -PassThru -EnableExit
+  - ps: $coverageSet = @('Coveralls.ps1')
+  - ps: $res = Invoke-Pester -CodeCoverage $coverageSet -OutputFormat NUnitXml -OutputFile TestsResults.xml -PassThru -EnableExit
   - ps: (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\TestsResults.xml))
   - ps: if (!$ENV:CA_KEY) { $ENV:CA_KEY = 14mb4l0n1 }
   - ps: $coverageResult = Format-Coverage -PesterResults $res -CoverallsApiToken $ENV:CA_KEY -BranchName $ENV:APPVEYOR_REPO_BRANCH
