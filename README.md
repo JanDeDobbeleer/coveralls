@@ -1,5 +1,7 @@
 ﻿# coveralls
 
+[![Build status](https://img.shields.io/appveyor/ci/janjoris/coveralls/master.svg?maxAge=2592000)](https://ci.appveyor.com/project/JanJoris/coveralls) [![Coverage Status](https://coveralls.io/repos/github/JanJoris/coveralls/badge.svg)](https://coveralls.io/github/JanJoris/coveralls) [![Gitter](https://badges.gitter.im/posh-coveralls/Lobby.svg)](https://gitter.im/posh-coveralls/Lobby) [![PS Gallery](https://img.shields.io/badge/PS%20Gallery-install-blue.svg)](https://www.powershellgallery.com/packages/coveralls)
+
 A PowerShell module to publish code coverage to [Coveralls.io](https://coveralls.io) using Pester
 
 ## Usage
