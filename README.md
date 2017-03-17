@@ -1,4 +1,4 @@
-# coveralls
+﻿# coveralls
 
 A PowerShell module to publish code coverage to [Coveralls.io](https://coveralls.io) using Pester
 

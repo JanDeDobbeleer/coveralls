@@ -32,6 +32,9 @@ Description = 'Create and upload code coverage data to Coveralls.io using Pester
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.0'
 
+# List of all files packaged with this module
+FileList = @('Coveralls.ps1')
+
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
 
