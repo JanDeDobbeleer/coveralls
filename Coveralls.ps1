@@ -147,7 +147,7 @@ function Format-Coverage {
         [parameter(Mandatory = $true,Position=2)]
         [string]
         $CoverallsApiToken,
-        $BranchName,        
+        $BranchName,
         $RootFolder = $pwd
     )
 
@@ -159,7 +159,7 @@ function Format-Coverage {
         Write-Error 'Please provide pester results with code coverage using the -CodeCoverage parameter'
         return;
     }
-    foreach ($file in $Include) {
+    foreach ($file in $pesterResults.CodeCoverage.AnalyzedFiles) {
         $hitcommands = Get-CommandsForFile -Commands $pesterResults.CodeCoverage.HitCommands -File $file
         $missedCommands = Get-CommandsForFile -Commands $pesterResults.CodeCoverage.MissedCommands -File $file
         $coverageResult = Merge-CoverageResult -HitCommands $hitcommands -MissedCommands $missedCommands -File $file 
@@ -210,6 +210,6 @@ function Get-CoveragePercentage {
         $coverageInfo = ConvertFrom-Json $response.Content
         return $coverageInfo.covered_percent
     } catch {
-        return
+        Write-Error 'We could not complete your request.'
     }    
 }
