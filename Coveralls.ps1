@@ -84,7 +84,10 @@ function Format-FileCoverage {
 
     $fileHash = Get-FileHash $File -Algorithm MD5
     $root = (Get-Item $RootFolder).FullName
-    $fileName = (Get-Item $File).FullName.Replace($root, '').Replace('\','/').Remove(0,1)
+    $fileName = (Get-Item $File).FullName.Replace($root, '').Replace('\','/')
+    if ($fileName.StartsWith('/')) {
+        $fileName = $fileName.Remove(0,1)
+    }
     return New-Object -TypeName PSObject -Property @{
         name = $fileName
         source_digest = $fileHash.Hash
@@ -103,7 +106,7 @@ function Get-CommandsForFile {
         $File
     )
 
-    $fullName = (Get-ChildItem $File).FullName
+    $fullName = (Get-Item $File).FullName
     $matchedCommands = $Commands | Where-Object {
         $_.File -eq $fullName
     }

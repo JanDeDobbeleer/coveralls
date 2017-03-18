@@ -1,4 +1,5 @@
-﻿# coveralls
+﻿coveralls
+=========
 
 [![Build status](https://img.shields.io/appveyor/ci/janjoris/coveralls/master.svg?maxAge=2592000)](https://ci.appveyor.com/project/JanJoris/coveralls) [![Coverage Status](https://coveralls.io/repos/github/JanJoris/coveralls/badge.svg)](https://coveralls.io/github/JanJoris/coveralls) [![Gitter](https://badges.gitter.im/posh-coveralls/Lobby.svg)](https://gitter.im/posh-coveralls/Lobby) [![PS Gallery](https://img.shields.io/badge/install-PS%20Gallery-blue.svg)](https://www.powershellgallery.com/packages/coveralls)
 
@@ -27,3 +28,9 @@ If you run you tests outside of the root folder of your repository, you need to 
 In case your CI does not allow you to fetch the branchname due to a checkout on a commit, you can specify it otherwise. This example uses Appveyor's environment variables.
 
     $coverage = Format-Coverage -Include $files -CoverallsApiToken $token -BranchName $ENV:APPVEYOR_REPO_BRANCH
+
+It's also possible to include a Pester result not to have to run Pester twice. Just provide the result and your good to go (make sure it has the code coverage included).
+
+    $coverage = Format-Coverage -PesterResults $result -CoverallsApiToken $token
+
+
