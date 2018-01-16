@@ -156,7 +156,7 @@ function Format-Coverage {
 
     $fileCoverageArray = @()
     if (!$pesterResults) {
-        $pesterResults = Invoke-Pester -CodeCoverage $Include -Quiet -PassThru
+        $pesterResults = Invoke-Pester -CodeCoverage $Include -Show None -PassThru
     }
     if (!$pesterResults.CodeCoverage) {
         Write-Error 'Please provide pester results with code coverage using the -CodeCoverage parameter'
